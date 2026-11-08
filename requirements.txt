@@ -1,0 +1,8 @@
+# RW Launcher 后端依赖
+# Python 3.10+
+
+pywebview>=5.0          # 操作系统内置 WebView 加载前端
+requests>=2.31          # 网络请求与下载
+
+# 开发与打包
+pyinstaller>=6.0

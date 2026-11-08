@@ -1,0 +1,633 @@
+/*
+ * 全局基础样式 + 设计令牌 + 外观主题变量体系
+ *
+ * 支持：
+ * - 浅色 / 深色 / 水色系 三套主题（html[data-theme]）
+ * - 自定义背景图（--bg-img）
+ * - 面板透明度（--panel-alpha）
+ * - 界面密度（html[data-density]）
+ * - 节日点缀配色（html[data-festival]）
+ * - 统一圆角 / 间距 / 阴影 / 动效 / 玻璃令牌
+ */
+
+/*
+ * 设计令牌：全局唯一来源
+ * 尺寸类令牌（圆角、间距、动效）三套主题共用，颜色类令牌按主题覆盖。
+ */
+:root {
+  /* 圆角档位 */
+  --r-xs: 3px;
+  --r-sm: 5px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-full: 999px;
+
+  /* 间距档位 */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* 动效档位 */
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 280ms;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* 层级阴影（克制的三级，仅用于需要浮起的元素） */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 1px rgba(0, 0, 0, 0.03);
+  --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-3: 0 10px 28px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
+
+  /* 焦点环 */
+  --ring: 0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+/* 浅色主题（默认） */
+:root {
+  /* 文字 */
+  --text: #1a1a1a;
+  --text-2: #333333;
+  --text-3: #666666;
+  --text-4: #999999;
+  --text-invert: #ffffff;
+
+  /* 背景 */
+  --bg: #ffffff;
+  --bg-mid: #f6f6f6;
+  --bg-soft: #fafafa;
+  --panel: #ffffff;
+
+  /* 边框 */
+  --border: #e5e5e5;
+  --border-soft: #f0f0f0;
+
+  /* 强调色（黑白灰风格下用近黑作强调） */
+  --accent: #1a1a1a;
+  --accent-hover: #333333;
+  --accent-active: #000000;
+  --accent-disabled: #cccccc;
+  --on-accent: #ffffff;
+
+  /* 面板透明度（由 JS 设置百分比） */
+  --panel-alpha: 100%;
+  --panel-solid: color-mix(in srgb, var(--panel) var(--panel-alpha), transparent);
+  --bg-mid-solid: color-mix(in srgb, var(--bg-mid) var(--panel-alpha), transparent);
+  --bg-soft-solid: color-mix(in srgb, var(--bg-soft) var(--panel-alpha), transparent);
+
+  /* 自定义背景图（JS 设置 url(...)） */
+  --bg-img: none;
+
+  /* 语义状态色 */
+  --success-bg: #e8f0e8; --success-text: #2e5a2e;
+  --danger-bg:  #f0e8e8; --danger-text:  #8c2e2e;
+  --warn-bg:    #f5efe0; --warn-text:    #8a6a28;
+  --info-bg:    #f0f0f0; --info-text:    #555555;
+
+  /* 半模态玻璃：底色 + 边缘渐变 + 羽化内光 */
+  --glass-bg: color-mix(in srgb, var(--panel) 74%, transparent);
+  --glass-blur: 16px;
+  --glass-edge-a: color-mix(in srgb, var(--text) 13%, transparent);
+  --glass-edge-b: color-mix(in srgb, var(--text) 3%, transparent);
+  --glass-feather:
+    inset 0 1px 0 color-mix(in srgb, #ffffff 52%, transparent),
+    inset 0 0 26px -16px color-mix(in srgb, var(--text) 45%, transparent);
+
+  /* 悬浮态高亮（卡片 / 行） */
+  --hover-tint: color-mix(in srgb, var(--text) 4%, transparent);
+  --press-tint: color-mix(in srgb, var(--text) 8%, transparent);
+  --selected-tint: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* 深色主题 */
+html[data-theme='dark'] {
+  --text: #f0f0f0;
+  --text-2: #cfcfcf;
+  --text-3: #9e9e9e;
+  --text-4: #7a7a7a;
+  --text-invert: #171717;
+
+  --bg: #171717;
+  --bg-mid: #232323;
+  --bg-soft: #1f1f1f;
+  --panel: #202020;
+
+  --border: #3a3a3a;
+  --border-soft: #2c2c2c;
+
+  --accent: #e8e8e8;
+  --accent-hover: #ffffff;
+  --accent-active: #c0c0c0;
+  --accent-disabled: #4a4a4a;
+  --on-accent: #171717;
+
+  /* 语义状态色（深色） */
+  --success-bg: #243424; --success-text: #8fd08f;
+  --danger-bg:  #382828; --danger-text:  #e08c8c;
+  --warn-bg:    #383224; --warn-text:    #d4b26a;
+  --info-bg:    #2c2c2c; --info-text:    #cfcfcf;
+
+  /* 深色下阴影加深、玻璃边缘提亮，避免浮起元素"糊"在背景里 */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.34), 0 1px 1px rgba(0, 0, 0, 0.24);
+  --shadow-2: 0 2px 10px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-3: 0 12px 32px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.35);
+
+  --glass-bg: color-mix(in srgb, var(--panel) 68%, transparent);
+  --glass-edge-a: color-mix(in srgb, #ffffff 15%, transparent);
+  --glass-edge-b: color-mix(in srgb, #ffffff 3%, transparent);
+  --glass-feather:
+    inset 0 1px 0 color-mix(in srgb, #ffffff 11%, transparent),
+    inset 0 0 26px -16px color-mix(in srgb, #000000 70%, transparent);
+
+  --hover-tint: color-mix(in srgb, #ffffff 6%, transparent);
+  --press-tint: color-mix(in srgb, #ffffff 10%, transparent);
+  --selected-tint: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+/* 水色系主题（mizuiro，日系亚文化） */
+html[data-theme='mizuiro'] {
+  /* 文字（深蓝灰，柔和不刺眼） */
+  --text: #2c4251;
+  --text-2: #3d5466;
+  --text-3: #6b8595;
+  --text-4: #9eb1bc;
+  --text-invert: #ffffff;
+
+  /* 背景（带蓝色调的奶白） */
+  --bg: #f4fafc;
+  --bg-mid: #e9f3f7;
+  --bg-soft: #eff6f9;
+  --panel: #ffffff;
+
+  /* 边框（极淡天蓝） */
+  --border: #d8eef4;
+  --border-soft: #e6f3f7;
+
+  /* 强调色（水蓝主色） */
+  --accent: #79b8d3;
+  --accent-hover: #5fa4c4;
+  --accent-active: #4a90b5;
+  --accent-disabled: #c8dde4;
+  --on-accent: #ffffff;
+
+  /* 主题特有色（穿透页等装饰用） */
+  --theme-accent-2: #b8a3d6; /* 薰衣草紫，亚文化常见搭配 */
+  --theme-accent-3: #f0a3bd; /* 樱花粉，糖系点缀 */
+  --theme-accent-4: #a8d8c9; /* 薄荷绿，亚文化色 */
+  --theme-deco-fade: rgba(121, 184, 211, 0.10);
+
+  /* 语义状态色（糖系色调） */
+  --success-bg: #e3f1e8; --success-text: #3d7050;
+  --danger-bg:  #f5e3e8; --danger-text:  #a04050;
+  --warn-bg:    #faf0d8; --warn-text:    #8a6a28;
+  --info-bg:    #e9f3f7; --info-text:    #3d5466;
+
+  --glass-bg: color-mix(in srgb, var(--panel) 76%, transparent);
+  --glass-edge-a: color-mix(in srgb, #79b8d3 26%, transparent);
+  --glass-edge-b: color-mix(in srgb, #79b8d3 6%, transparent);
+  --glass-feather:
+    inset 0 1px 0 color-mix(in srgb, #ffffff 60%, transparent),
+    inset 0 0 26px -16px color-mix(in srgb, #79b8d3 55%, transparent);
+
+  --hover-tint: color-mix(in srgb, #79b8d3 10%, transparent);
+  --press-tint: color-mix(in srgb, #79b8d3 16%, transparent);
+  --selected-tint: color-mix(in srgb, #79b8d3 16%, transparent);
+}
+
+/* 界面密度 */
+html[data-density='compact'] {
+  --pad: 14px;
+  --gap: 10px;
+}
+html:not([data-density='compact']) {
+  --pad: 20px;
+  --gap: 16px;
+}
+
+/* 基础重置 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  background-image: var(--bg-img);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  transition: background-color var(--dur-3) var(--ease), color var(--dur-3) var(--ease);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  user-select: text;
+}
+
+/* 键盘可达性：只在键盘导航时显示焦点环 */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: var(--r-xs);
+}
+
+/* 文本选区 */
+::selection {
+  background: var(--selected-tint);
+  color: var(--text);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text-4) 45%, transparent);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--text-3) 70%, transparent);
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* 工具类 */
+.text-muted { color: var(--text-3); }
+.text-faint { color: var(--text-4); }
+.text-mono  { font-family: "Cascadia Code", "Consolas", "Menlo", monospace; }
+
+.row { display: flex; flex-direction: row; }
+.col { display: flex; flex-direction: column; }
+.gap-4  { gap: 4px; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.gap-24 { gap: 24px; }
+
+.flex-1 { flex: 1; min-width: 0; min-height: 0; }
+.center { display: flex; align-items: center; justify-content: center; }
+
+/* 分隔线 */
+.divider {
+  height: 1px;
+  background: var(--border-soft);
+  width: 100%;
+}
+
+/*
+ * 通用容器：页面 / 卡片 / 表面
+ * 页面用 .ui-page 统一内边距与滚动；卡片用 .ui-card 统一圆角、边框与克制阴影。
+ */
+.ui-page {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: var(--pad);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ui-card {
+  background: var(--panel-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-1);
+}
+
+/* 可交互卡片：悬浮时轻微浮起（少量浮动，克制使用） */
+.ui-card--interactive {
+  transition: box-shadow var(--dur-2) var(--ease), transform var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease);
+}
+.ui-card--interactive:hover {
+  box-shadow: var(--shadow-2);
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+  transform: translateY(-1px);
+}
+.ui-card--interactive:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-1);
+}
+
+/* 页面标题区：标题 + 说明 + 右侧操作 */
+.ui-head {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-4);
+  flex-shrink: 0;
+}
+.ui-head__text { flex: 1; min-width: 0; }
+.ui-head__title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.ui-head__sub {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+.ui-head__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+/* 小节标题 */
+.ui-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+.ui-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* 标记：徽标 / 胶囊 */
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.7;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: var(--bg-soft);
+  color: var(--text-3);
+  white-space: nowrap;
+}
+.ui-badge--accent {
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  background: var(--selected-tint);
+  color: var(--text);
+}
+.ui-badge--success { border-color: transparent; background: var(--success-bg); color: var(--success-text); }
+.ui-badge--danger  { border-color: transparent; background: var(--danger-bg);  color: var(--danger-text); }
+.ui-badge--warn    { border-color: transparent; background: var(--warn-bg);    color: var(--warn-text); }
+.ui-badge--info    { border-color: transparent; background: var(--info-bg);    color: var(--info-text); }
+
+/* 提示条：状态反馈统一形态（左粗边 + 语义底色） */
+.ui-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  border-left: 3px solid currentColor;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.ui-notice__icon { flex-shrink: 0; display: inline-flex; margin-top: 1px; }
+.ui-notice__body { flex: 1; min-width: 0; }
+.ui-notice__title { font-weight: 700; }
+.ui-notice--warn   { background: var(--warn-bg);   color: var(--warn-text); }
+.ui-notice--danger { background: var(--danger-bg); color: var(--danger-text); }
+.ui-notice--info   { background: var(--info-bg);   color: var(--info-text); }
+.ui-notice--success{ background: var(--success-bg);color: var(--success-text); }
+
+/* 空状态 */
+.ui-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-8) var(--sp-4);
+  color: var(--text-4);
+  text-align: center;
+}
+.ui-empty__icon { opacity: 0.5; }
+.ui-empty__title { font-size: 13px; color: var(--text-3); font-weight: 600; }
+.ui-empty__desc { font-size: 12px; color: var(--text-4); max-width: 320px; line-height: 1.7; }
+
+/* 骨架屏：加载占位 */
+.ui-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-soft);
+  border-radius: var(--r-sm);
+}
+.ui-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--text) 8%, transparent),
+    transparent
+  );
+  animation: ui-skeleton-sweep 1.25s var(--ease) infinite;
+}
+@keyframes ui-skeleton-sweep {
+  100% { transform: translateX(100%); }
+}
+
+/*
+ * 半模态玻璃
+ * 底色半透明 + 背景模糊 + 渐变边缘（mask 描边）+ 羽化内光，
+ * 仅在标题栏 / 弹窗 / 浮层等"浮在内容之上"的元素上使用。
+ */
+.ui-glass {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+  box-shadow: var(--glass-feather), var(--shadow-1);
+}
+.ui-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    var(--glass-edge-a),
+    var(--glass-edge-b) 42%,
+    var(--glass-edge-a) 88%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* 节日点缀：仅覆盖强调色与装饰色，文字与背景仍由当前主题决定 */
+html[data-festival='new-year'] {
+  --accent: #c8362b;
+  --accent-hover: #ab2b21;
+  --accent-active: #8e231a;
+  --accent-disabled: #d8b4b0;
+  --on-accent: #ffffff;
+  --festival-tint: rgba(200, 54, 43, 0.08);
+  --festival-deco: #c8362b;
+}
+
+/* 春节：中国红 + 金色装饰 */
+html[data-festival='spring-festival'] {
+  --accent: #c1272d;
+  --accent-hover: #a41f24;
+  --accent-active: #87181d;
+  --accent-disabled: #d9b2b4;
+  --on-accent: #ffffff;
+  --festival-tint: rgba(193, 39, 45, 0.09);
+  --festival-deco: #d4a24c;
+}
+
+/* 清明：松柏青 */
+html[data-festival='qingming'] {
+  --accent: #4a8c6a;
+  --accent-hover: #3d7759;
+  --accent-active: #316248;
+  --accent-disabled: #bcd2c6;
+  --on-accent: #ffffff;
+  --festival-tint: rgba(74, 140, 106, 0.09);
+  --festival-deco: #4a8c6a;
+}
+
+/* 劳动节：砖橙 */
+html[data-festival='labour-day'] {
+  --accent: #c25b2b;
+  --accent-hover: #a94c21;
+  --accent-active: #8e3e1a;
+  --accent-disabled: #dcc3b3;
+  --on-accent: #ffffff;
+  --festival-tint: rgba(194, 91, 43, 0.09);
+  --festival-deco: #c25b2b;
+}
+
+/* 端午：艾草绿 */
+html[data-festival='dragon-boat'] {
+  --accent: #2f7a52;
+  --accent-hover: #256543;
+  --accent-active: #1d5036;
+  --accent-disabled: #b3cabb;
+  --on-accent: #ffffff;
+  --festival-tint: rgba(47, 122, 82, 0.09);
+  --festival-deco: #2f7a52;
+}
+
+/* 中秋：桂金 */
+html[data-festival='mid-autumn'] {
+  --accent: #c08a2e;
+  --accent-hover: #a67524;
+  --accent-active: #8a611c;
+  --accent-disabled: #dcccb0;
+  --on-accent: #ffffff;
+  --festival-tint: rgba(192, 138, 46, 0.10);
+  --festival-deco: #c08a2e;
+}
+
+/* 国庆：赤红 */
+html[data-festival='national-day'] {
+  --accent: #b8232b;
+  --accent-hover: #9c1c23;
+  --accent-active: #82151b;
+  --accent-disabled: #d7b0b2;
+  --on-accent: #ffffff;
+  --festival-tint: rgba(184, 35, 43, 0.09);
+  --festival-deco: #d4a24c;
+}
+
+/* 节日轻装饰：导航栏底边与页面标题随节日色 */
+html[data-festival] .tabs {
+  border-bottom-color: var(--accent);
+}
+html[data-festival] .ui-head__title::before {
+  content: "";
+  width: 3px;
+  height: 14px;
+  border-radius: var(--r-full);
+  background: var(--festival-deco, var(--accent));
+}
+
+/* 尊重系统的"减少动效"偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

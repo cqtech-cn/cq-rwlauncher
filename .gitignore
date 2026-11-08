@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# Node / Vite
+node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.cache/
+
+# PyInstaller
+build/dist/
+build/build/
+build/rwlauncher/
+dist/
+*.spec.bak
+
+# Inno Setup 输出
+build/installer_output/
+
+# 配置 / 数据 / 临时
+config.json
+config.json.tmp
+config.json.bak
+data/
+logs/
+*.log
+.cache/
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---------- 追加：PyInstaller 中间产物 ----------
+# 你的 tree 里实际是 build/pyinstaller/，当前规则没覆盖
+build/pyinstaller/
+
+# ---------- 追加：本地缓存 / 快照 / 备份 ----------
+festival_cache.json
+saves_backup/
+tree.txt
+*.tmp
+*.bak
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.ruff_cache/
+
+# ---------- 追加：可能含令牌的 frp 配置 ----------
+binaries/frpc/frpc_cqrwl.ini
+
+binaries/LEProc/*.exe
+binaries/LEProc/*.dll
+_diag_subclass.py
+_local_backup_test.py
+_nested_test.py
+_probe_native.py
+_verify_embedded.py
+test_hotkey.py
+test_inject.py
